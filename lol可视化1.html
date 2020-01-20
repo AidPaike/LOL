@@ -1,0 +1,82 @@
+<html>
+  <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="echarts.min.js"></script>
+  </head>
+  <body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 1000px;height:800px;"></div>
+    <script type="text/javascript">
+     // 基于准备好的dom，初始化echarts实例
+       var myChart = echarts.init(document.getElementById('main'));
+setTimeout(function () {
+    option = {
+      title:{
+        text:'kda'
+      },
+        legend: {},
+        tooltip: {
+            trigger: 'axis',
+            showContent: false
+        },
+        dataset: {
+            source: [
+                ['product', '2013', '2014', '2015', '2016', '2017','2018','2019'],
+                ['符文法师', 1.63636,2.8547, 7.5,4.58824, 3.26087, 3.375, 3.07595],
+                ['盲僧', 4.92857, 3.68644,3.78409,3.78409, 2.2, 3.74286,3.16814],
+                ['探险家',4.2963,5, 0,3.3662, 3.25, 3, 2.88889],
+                ['疾风剑豪',0,4.44118,2.45833,0,2.44444,2,3.27273]
+
+            ]
+        },
+        xAxis: {type: 'category'},
+        yAxis: {gridIndex: 0},
+        grid: {top: '55%'},
+        series: [
+            {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+            {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+            {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+            {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+
+            {
+                type: 'pie',
+                id: 'pie',
+                radius: '30%',
+                center: ['50%', '25%'],
+                label: {
+                    formatter: '{b}: {@2013} ({d}%)'
+                },
+                encode: {
+                    itemName: 'product',
+                    value: '2013',
+                    tooltip: '2013'
+                }
+            }
+        ]
+    };
+
+    myChart.on('updateAxisPointer', function (event) {
+        var xAxisInfo = event.axesInfo[0];
+        if (xAxisInfo) {
+            var dimension = xAxisInfo.value + 1;
+            myChart.setOption({
+                series: {
+                    id: 'pie',
+                    label: {
+                        formatter: '{b}: {@[' + dimension + ']} ({d}%)'
+                    },
+                    encode: {
+                        value: dimension,
+                        tooltip: dimension
+                    }
+                }
+            });
+        }
+    });
+
+    myChart.setOption(option);
+
+});
+    </script>
+  </body>
+</html>
